@@ -5,14 +5,14 @@ const { OrderItems } = cds.entities
 module.exports = cds.service.impl(function () {
     this.after('READ', 'Orders', async (orders) => {
         for (let each of orders) {
-            const items = await SELECT.from(OrderItems,['amount','netAmount']).where({ parent_id: each.ID });
+            const items = await SELECT.from(OrderItems,[ 'amount', 'netAmount']).where({ PARENT_ID: each.ID });
             let total = 0;
             items.forEach(items => {
                 total = total + (items.amount * items.netAmount);
             })
             each.total = total;
         }
-    })
+    }) 
 
     this.on('payment',  async (req) => {
         const order = await SELECT.one.from(cds.entities.Orders).where({ ID: req.data.orderID});

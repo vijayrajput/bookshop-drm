@@ -1,16 +1,16 @@
 const express = require ('express')
 const app = express()
-const port = 4004
+const { PORT=4004 } = process.env
 const cds = require('@sap/cds')
 
 
 
 initcds(app);
 initdrmapi(app);
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Welcome to Data Retention Manager Demo !!!'))
 
 
-app.listen(port , () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(PORT , () => console.log(`Example app listening at http://localhost:${PORT}`))
 
 async function initcds (app) {
    // await cds.connect.to ('db');
@@ -36,15 +36,22 @@ async function initdrmapi(app) {
     console.log("Data Subject Role: "+req.params.dataSubjectRole)
     
     const legalEntities = [];
-    
-    const dbLegalEntities = await cds.read(cds.entities.LegalEntities).where({role: req.params.dataSubjectRole})
+    let dbLegalEntities = [];
+    try{
+      console.log(cds.entities.LegalEntities);  
+    dbLegalEntities = await cds.read(cds.entities.LegalEntities).where({role: req.params.dataSubjectRole})
+    }
+    catch(e)
+    {
+       console.log(e);
+    }
    for (let each of dbLegalEntities) {
         const legalEnties = {
         "value" : each.ID,
         'valueDesc' : each.description
        }
        legalEntities.push(legalEnties)
-       
+
     }
     
     
@@ -52,7 +59,7 @@ async function initdrmapi(app) {
   })
 
   app.get('/drm/conditionalFieldValues/:conditionFieldName', (req, res) => {
-    console.log("Data Subject Role: "+req.params.dataSubjectRole)  
+    console.log("DConditionFieldName : "+req.params.conditionFieldName)  
     const legalEnties = {
         "value" : "1010",
         'valueDesc' : "Europe Company"

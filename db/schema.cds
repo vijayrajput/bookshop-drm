@@ -35,7 +35,7 @@ entity Customers : managed {
 entity Orders : cuid, managed {
   OrderNo  : String @title:'Order Number'; //> readable key
   Items    : Composition of many OrderItems on Items.parent = $self;
-  status  : String(10) ;
+  status  : String(10);
   paymentDate : Timestamp;
   total    : Decimal(9,2) ;
   currency : Currency;
