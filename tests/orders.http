@@ -10,9 +10,19 @@ GET http://localhost:4004/admin/Orders?
 POST http://localhost:4004/browse/Orders
 Content-Type: application/json
 
-{ "OrderNo":"2019-09...", "Items":[
+{ "OrderNo":"2019-09",
+  "customer_ID" : 1001, 
+  "Items":[
     { "book_ID":201, "amount":5 },
     { "book_ID":207, "amount":3 }
 ]}
 
 # Sending this three times should result in a 409: 5 exceeds stock for book #201
+
+### List all Orders
+POST http://localhost:4004/admin/payment
+Content-Type: application/json
+
+{
+   "orderID" : "7e2f2640-6866-4dcf-8f4d-3027aa831cad" 
+}

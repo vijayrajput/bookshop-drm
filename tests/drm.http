@@ -1,0 +1,6 @@
+### List Books with their current stocks
+GET http://localhost:4004/admin/Orders
+
+
+###
+GET http://localhost:4004/drm/legalEntities/customer

@@ -21,12 +21,24 @@ entity Authors : managed {
   books  : Association to many Books on books.author = $self;
 }
 
-entity Orders : cuid, managed {
-  OrderNo  : String @title:'Order Number'; //> readable key
-  Items    : Composition of many OrderItems on Items.parent = $self;
-  total    : Decimal(9,2) @readonly;
-  currency : Currency;
+entity Customers : managed {
+    Key ID : Integer;
+    name : String(111);
+    isBlocked : Boolean; 
+    orders : Association to many Orders on orders.customer = $self;
 }
+
+entity Orders : cuid, managed {
+  OrderNo  : String @title:'Order Number'; //> readable key
+  Items    : Composition of many OrderItems on Items.parent = $self;
+  status  : String(10) ;
+  paymentDate : Timestamp;
+  total    : Decimal(9,2) ;
+  currency : Currency;
+  customer : Association to Customers; 
+
+}
+
 entity OrderItems : cuid {
   parent    : Association to Orders;
   book      : Association to Books;

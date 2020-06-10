@@ -1,0 +1,4 @@
+ID;name;isBlocked
+1001;Customer1;false
+1002;Customer2;true
+1003;Customer3;false

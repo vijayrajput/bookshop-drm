@@ -27,10 +27,11 @@ annotate AdminService.Orders with @(
 		//
 		//	Lists of Orders
 		//
-		SelectionFields: [ createdAt, createdBy ],
+		SelectionFields: [ createdAt, Customer ],
 		LineItem: [
-			{Value: createdBy, Label:'Customer'},
-			{Value: createdAt, Label:'Date'}
+			{Value: Customer, Label:'Customer'},
+			{Value: createdAt, Label:'Date'},
+            {Value: total, Label:'Total Amount'}
 		],
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -42,10 +43,10 @@ annotate AdminService.Orders with @(
 				Label: 'Order number ', //A label is possible but it is not considered on the ObjectPage yet
 				Value: OrderNo
 			},
-			Description: {Value: createdBy}
+			Description: {Value: Customer}
 		},
 		Identification: [ //Is the main field group
-			{Value: createdBy, Label:'Customer'},
+			{Value: Customer, Label:'Customer'},
 			{Value: createdAt, Label:'Date'},
 			{Value: OrderNo },
 		],
@@ -59,6 +60,7 @@ annotate AdminService.Orders with @(
 		],
 		FieldGroup#Details: {
 			Data: [
+                {Value: total, Label:'Totaal Amount'},
 				{Value: currency_code, Label:'Currency'}
 			]
 		},

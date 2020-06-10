@@ -5,24 +5,21 @@
   "license": "SAP SAMPLE CODE LICENSE",
   "dependencies": {
     "@sap/cds": "^3",
+    "@sap/hana-client": "^2.4.182",
     "express": "^4",
-    "@sap/hana-client": "^2.4.182"
+    "hdb": "^0.18.0"
   },
   "devDependencies": {
     "sqlite3": "^4.1.1"
   },
   "scripts": {
-    "start": "cds run",
+    "start": "node server.js",
     "watch": "cds watch"
   },
   "cds": {
     "requires": {
       "db": {
-        "kind": "hana",
-        "model": [
-          "db",
-          "srv"
-        ]
+         "kind":"sqlite", "credentials":{"database": "my.db"}
       }
     }
   }
