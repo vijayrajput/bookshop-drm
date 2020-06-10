@@ -32,13 +32,21 @@ async function initcds (app) {
 }
 
 async function initdrmapi(app) {
-  app.get('/drm/legalEntities/:dataSubjectRole', (req, res) => {
-    console.log("Data Subject Role: "+req.params.dataSubjectRole)  
-    const legalEnties = {
-        "value" : "1010",
-        'valueDesc' : "Europe Company"
+  app.get('/drm/legalEntities/:dataSubjectRole', async (req, res) => {
+    console.log("Data Subject Role: "+req.params.dataSubjectRole)
+    
+    const legalEntities = [];
+    const dbLegalEntities = await cds.read(cds.entities.LegalEntities).where({role: req.params.dataSubjectRole})
+   for (let each of dbLegalEntities) {
+        const legalEnties = {
+        "value" : each.ID,
+        'valueDesc' : each.description
+       }
+       legalEntities.push(legalEnties)
     }
-    res.send(JSON.stringify([legalEnties]))
+    
+    
+    res.send(JSON.stringify(legalEntities))
   })
 
   app.get('/drm/conditionalFieldValues/:conditionFieldName', (req, res) => {

@@ -20,7 +20,11 @@ entity Authors : managed {
   placeOfDeath : String;
   books  : Association to many Books on books.author = $self;
 }
-
+entity LegalEntities {
+    Key ID : Integer;
+    Key role : String(50);
+    Key description: String(100);
+}
 entity Customers : managed {
     Key ID : Integer;
     name : String(111);
