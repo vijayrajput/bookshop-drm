@@ -7,7 +7,7 @@
     {
       "name": "bookshop", "request": "launch", "type": "node", "runtimeExecutable": "npx", "runtimeArgs": [ "-n" ],
       "args": [ "--", "cds", "run", "--in-memory" ],
-      "cwd": "${workspaceFolder}/packages/bookshop",
+      "cwd": "${workspaceFolder}/",
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
     },

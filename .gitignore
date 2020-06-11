@@ -14,3 +14,4 @@ connection.properties
 default-env.json
 .env1
 packages/messageBox
+sqlite.db
