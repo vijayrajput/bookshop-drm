@@ -1,0 +1,8 @@
+---
+applications:
+- name: capire-bookshop-approuter
+  path: .
+  memory: 128M
+services:
+  - bookshop-drm-uaa
+  
