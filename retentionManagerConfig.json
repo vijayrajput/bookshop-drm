@@ -1,0 +1,48 @@
+{
+	"xs-security": {
+		"xsappname": "bookshop-drm",
+		"authorities": [
+			"$ACCEPT_GRANTED_AUTHORITIES"
+		]
+	},
+	"retention-configs": {
+		"applicationGroupName": "bookshop-drm",
+		"applicationGroupDescription": "Sample DRM Application",
+		"applicationGroupDescriptionKey" : "bookshop-drm",
+		"applicationGroupBaseURL": "https://capire-bookshop-approuter-smart-kookaburra-qi.cfapps.eu10.hana.ondemand.com",
+		"authority": "bookshop-drm!t1824.retention.manager",
+		"dataSubjects": [{
+			"dataSubjectRole": "Customer",
+			"dataSubjectDescription": "Customer Data Subject Role",
+			"dataSubjectDescriptionKey" : "Customer",
+			"dataSubjectBaseURL": "https://capire-bookshop-approuter-smart-kookaburra-qi.cfapps.eu10.hana.ondemand.com",
+			"dataSubjectInformationEndPoint": "/dpp/dataSubjectInformation",
+			"dataSubjectDeletionEndPoint": "/dpp/deleteDataSubject",
+			"dataSubjectsDestroyingEndPoint": "/dpp/destroyDataSubjects",
+			"legalEntity": {
+				"legalEntity": "CompanyCode",
+				"legalEntityDescription": "Company Code",
+				"legalEntityDescriptionKey": "CompanyCode",
+				"legalEntityValueHelpEndPoint": "/dpp/legalEntities"
+			},
+			"legalGrounds": [{
+				"legalGround": "Order",
+				"legalGroundDescription": "Customer Order Document",
+				"legalGroundDescriptionKey": "Order",
+				"legalGroundBaseURL": "https://capire-bookshop-approuter-smart-kookaburra-qi.cfapps.eu10.hana.ondemand.com",
+				"dataSubjectEndofBusinessEndPoint": "/dpp/dataSubjectEndOfBusiness",
+				"dataSubjectLegalEntitiesEndPoint": "/dpp/dataSubjectLegalEntities",
+				"dataSubjectLastRetentionStartDatesEndPoint": "/dpp/dataSubjectRetentionStartDate",
+				"dataSubjectsEndofResidenceEndPoint": "/dpp/endofResidenceDataSubject",
+				"dataSubjectsEndofResidenceConfirmationEndPoint": "/dpp/endofResidenceDSConfirmation",
+				"dataSubjectLegalGroundDeletionEndPoint": "/dpp/deleteDSLegalGroundInstances",
+				"dataSubjectsLegalGroundDestroyingEndPoint": "/dpp/destroyLegalGroundInstances",
+				"startTimes": [{
+					"startTime": "paymentDate",
+					"startTimeDescription": "Order Payment Date",
+					"startTimeDescriptionKey": "paymentDate"
+				}]
+			}]
+		}]
+	}
+}

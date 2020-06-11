@@ -1,9 +1,28 @@
 const express = require ('express')
+const bodyParser = require('body-parser')
 const app = express()
+
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const { PORT=4004 } = process.env
 const cds = require('@sap/cds')
 
+// add security handling via passport
+/*var passport = require("passport");
+var xssec = require("@sap/xssec"); 
+var xsenv = require("@sap/xsenv");
+passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+	uaa: {
+		tag: "xsuaa"
+	}
+}).uaa));
 
+app.use(passport.initialize());
+app.use(passport.authenticate("JWT", {
+	session: false
+}));*/
 
 initcds(app);
 initdrmapi(app);
@@ -65,6 +84,66 @@ async function initdrmapi(app) {
         'valueDesc' : "Europe Company"
     }
     res.send(JSON.stringify([legalEnties]))
+  })
+
+  app.post('/drm/dataSubjectEndofBusiness', async (req,res) => {
+    const reqBody = req.body
+    console.log(reqBody);
+    let reply = {
+      "dataSubjectExpired": true,
+      "dataSubjectNotExpiredReason": ""
+    }
+    try{
+    if(reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround ==='Order'){
+      let orders = []
+     orders = await SELECT.from('sap.capire.bookshop.Orders').where({customer_ID:reqBody.dataSubjectID}) 
+     if(orders.length === 0)
+     {
+      res.status(204).send();
+      return;
+     }
+     else{
+      for (let each of orders) {
+       if(each.paymentDate === null)
+       {
+        reply.dataSubjectExpired = false
+        reply.dataSubjectNotExpiredReason = 'Orders are still not paid'  
+        res.status(200).send(reply);
+        return;
+       }
+      }
+      res.status(200).send(reply);
+     }
+
+    }
+  }catch(e)
+  {
+     console.log(e);
+  }
+  })
+
+
+  app.post('/drm/dataSubjectLegalEntities', async (req,res) => {
+    const reqBody = req.body
+    console.log(reqBody);
+    let reply = []
+    try{
+      if(reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround ==='Order'){
+        const legalEntity = await SELECT.one.from('AdminService.Customers',['legalEntity']).where({ID:reqBody.dataSubjectID}) 
+        if(legalEntity === null)
+        {
+          res.status(204).send()
+          return;
+        }
+        reply.push(legalEntity);
+      }
+      res.status(200).send(reply);
+      return;
+    
+  }catch(e)
+  {
+     console.log(e);
+  }
   })
 }
 

@@ -1,4 +1,4 @@
-ID;name;isBlocked
-1001;Customer1;false
-1002;Customer2;true
-1003;Customer3;false
+ID;name;legalEntity;isBlocked
+1001;Customer1;1001;false
+1002;Customer2;1002;false
+1003;Customer3;1001;true

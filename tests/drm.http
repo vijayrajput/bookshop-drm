@@ -3,4 +3,24 @@ GET http://localhost:4004/admin/Orders
 
 
 ###
-GET http://localhost:4004/drm/legalEntities/Employee
+GET http://localhost:4004/drm/legalEntities/Customer
+
+###
+POST http://localhost:4004/drm/dataSubjectEndofBusiness
+Content-Type: application/json
+
+{
+  "legalGround": "Order",
+  "dataSubjectRole": "Customer",
+  "dataSubjectID": "1003"
+}
+
+###
+POST http://localhost:4004/drm/dataSubjectLegalEntities
+Content-Type: application/json
+
+{
+  "legalGround": "Order",
+  "dataSubjectRole": "Customer",
+  "dataSubjectID": "1002"
+}

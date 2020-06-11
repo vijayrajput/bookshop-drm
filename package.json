@@ -6,8 +6,12 @@
   "dependencies": {
     "@sap/cds": "^3",
     "@sap/hana-client": "^2.4.182",
+    "@sap/xsenv": "^3.0.0",
+    "@sap/xssec": "^3.0.3",
+    "body-parser": "^1.19.0",
     "express": "^4",
-    "hdb": "^0.18.0"
+    "hdb": "^0.18.0",
+    "passport": "^0.4.1"
   },
   "devDependencies": {
     "sqlite3": "^4.1.1"
@@ -19,15 +23,7 @@
   "cds": {
     "requires": {
       "db": {
-          "kind": "hana",
-          "model": [
-            "db/",
-            "srv/",
-            "app/",
-            "schema",
-            "services",
-            []
-          ]
+        "kind": "sqlite"
       }
     }
   }

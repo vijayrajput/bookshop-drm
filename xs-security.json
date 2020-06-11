@@ -1,0 +1,18 @@
+{  
+    "xsappname":"bookshop-drm",
+    "tenant-mode":"dedicated",
+    "scopes":[  
+       {  
+          "name":"$XSAPPNAME.Read",
+          "description":"Read application data"
+       },
+       {  
+          "name":"$XSAPPNAME.retention.manager",
+          "description":"Retention manager service callback scope",
+          "grant-as-authority-to-apps":[  "retention-manager!t1824", "bookshop-drm!b1430|retention-manager-service!b1824"  ]
+       }         
+    ],
+    
+    "role-templates":[  
+    ]
+ }

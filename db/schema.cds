@@ -28,6 +28,7 @@ entity LegalEntities {
 entity Customers : managed {
     Key ID : Integer;
     name : String(111);
+    legalEntity: Integer;
     isBlocked : Boolean; 
     orders : Association to many Orders on orders.customer = $self;
 }
