@@ -1,5 +1,5 @@
 const cds = require('@sap/cds')
-const { Books } = cds.entities
+//const { Books } = cds.entities
 
 /** Service implementation for CatalogService */
 module.exports = cds.service.impl(function() {
@@ -22,7 +22,7 @@ async function _reduceStock (req) {
       `No Customer information`
     )
   }
-  const customer = await SELECT.one(cds.entities.Customers).where({ ID: req.data.customer_ID})
+  const customer = await SELECT.one('sap.capire.bookshop.Customers').where({ ID: req.data.customer_ID})
   if(customer === null ||customer === undefined )
   {
       req.error (409,
@@ -40,7 +40,7 @@ async function _reduceStock (req) {
 
 
   return cds.transaction(req) .run (()=> OrderItems.map (order =>
-    UPDATE (Books) .set ('stock -=', order.amount)
+    UPDATE ('sap.capire.bookshop.Books') .set ('stock -=', order.amount)
     .where ('ID =', order.book_ID) .and ('stock >=', order.amount)
   )) .then (all => all.forEach ((affectedRows,i) => {
     if (affectedRows === 0)  req.error (409,

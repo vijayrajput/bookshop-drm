@@ -1,11 +1,11 @@
 const cds = require('@sap/cds')
-const { OrderItems } = cds.entities
+//const { OrderItems } = cds.entities
 
 /** Service implementation for CatalogService */
 module.exports = cds.service.impl(function () {
     this.after('READ', 'Orders', async (orders) => {
         for (let each of orders) {
-            const items = await SELECT.from(OrderItems,[ 'amount', 'netAmount']).where({ PARENT_ID: each.ID });
+            const items = await SELECT.from('sap.capire.bookshop.OrderItems',[ 'amount', 'netAmount']).where({ PARENT_ID: each.ID });
             let total = 0;
             items.forEach(items => {
                 total = total + (items.amount * items.netAmount);
@@ -15,7 +15,7 @@ module.exports = cds.service.impl(function () {
     }) 
 
     this.on('payment',  async (req) => {
-        const order = await SELECT.one.from(cds.entities.Orders).where({ ID: req.data.orderID});
+        const order = await SELECT.one.from('sap.capire.bookshop.Orders').where({ ID: req.data.orderID});
         
         if(order == null || order == undefined)
         {
@@ -25,7 +25,7 @@ module.exports = cds.service.impl(function () {
         {
             req.error (409, `Already Paid`)
         }
-        cds.transaction(req).run( UPDATE(cds.entities.Orders).set({status:'paid',paymentDate: Date.now()}).where({ ID: req.data.orderID}))
+        cds.transaction(req).run( UPDATE('sap.capire.bookshop.Orders').set({status:'paid',paymentDate: Date.now()}).where({ ID: req.data.orderID}))
         req.info('201','Order Update with Payment Information')
     })
 

@@ -38,8 +38,8 @@ async function initdrmapi(app) {
     const legalEntities = [];
     let dbLegalEntities = [];
     try{
-      console.log(cds.entities.LegalEntities);  
-    dbLegalEntities = await cds.read(cds.entities.LegalEntities).where({role: req.params.dataSubjectRole})
+     // console.log(cds.entities.LegalEntities);  
+    dbLegalEntities = await cds.read('sap.capire.bookshop.LegalEntities').where({role: req.params.dataSubjectRole})
     }
     catch(e)
     {
