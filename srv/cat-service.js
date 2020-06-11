@@ -17,7 +17,7 @@ async function _updateItemsNetAmout (req) {
   const { Items: OrderItems } = req.data
   const transaction = cds.transaction(req);
   for (let each of OrderItems) {
-    const price = await transaction.run(SELECT.one.from(Books,['price']).where({ID:each.book_ID}));
+    const price = await transaction.run(SELECT.one.from('sap.capire.bookshop.Books',['price']).where({ID:each.book_ID}));
     each.netAmount = price.price;
   }
   console.log(OrderItems);
