@@ -2,9 +2,11 @@ const express = require ('express')
 const bodyParser = require('body-parser')
 const app = express()
 
-//Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+//Here we are configuring express to use body-parser as middle-ware for rest services only.
+//app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+var jsonParser = bodyParser.json();
+
 
 const { PORT=4004 } = process.env
 const cds = require('@sap/cds')
@@ -86,7 +88,7 @@ async function initdrmapi(app) {
     res.send(JSON.stringify([legalEnties]))
   })
 
-  app.post('/drm/dataSubjectEndofBusiness', async (req,res) => {
+  app.post('/drm/dataSubjectEndofBusiness', jsonParser,async (req,res) => {
     const reqBody = req.body
     console.log(reqBody);
     let reply = {
@@ -123,7 +125,7 @@ async function initdrmapi(app) {
   })
 
 
-  app.post('/drm/dataSubjectLegalEntities', async (req,res) => {
+  app.post('/drm/dataSubjectLegalEntities', jsonParser,async (req,res) => {
     const reqBody = req.body
     console.log(reqBody);
     let reply = []
