@@ -24,3 +24,21 @@ Content-Type: application/json
   "dataSubjectRole": "Customer",
   "dataSubjectID": "1002"
 }
+
+
+###
+POST http://localhost:4004/drm/dataSubjectLastRetentionStartDates
+Content-Type: application/json
+
+{
+  "legalGround": "Order",
+  "dataSubjectRole": "Customer",  
+  "dataSubjectID": "1002",
+  "legalEntity": "1002",
+  "startTime": "paymentDate",
+  "rulesConditionSet": [
+    {
+      "retentionID": "1"
+    }
+  ]
+}
