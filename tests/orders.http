@@ -4,17 +4,17 @@ GET http://localhost:4004/admin/Books?$select=ID,stock
 
 ### List all Orders
 GET http://localhost:4004/admin/Orders?
-&$expand=Items
+//&$expand=Items
 
 ### Submit Orders
 POST http://localhost:4004/browse/Orders
 Content-Type: application/json
 
-{ "OrderNo":"2019-09",
+{ "OrderNo":"2019-0911",
   "customer_ID" : 1001, 
   "Items":[
-    { "book_ID":201, "amount":5 },
-    { "book_ID":207, "amount":3 }
+    { "book_ID":201, "amount":1 },
+    { "book_ID":207, "amount":1 }
 ]}
 
 # Sending this three times should result in a 409: 5 exceeds stock for book #201
@@ -24,5 +24,5 @@ POST http://localhost:4004/admin/payment
 Content-Type: application/json
 
 {
-   "orderID" : "cc6b1180-45cc-48a7-9fa5-a43783d0cdbe" 
+   "orderID" : "5fdc5f3e-6b76-4621-b7d9-048b527797c5" 
 }

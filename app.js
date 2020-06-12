@@ -98,7 +98,7 @@ async function initdrmapi(app) {
     try{
     if(reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround ==='Order'){
       let orders = []
-     orders = await SELECT.from('sap.capire.bookshop.Orders').where({customer_ID:reqBody.dataSubjectID}) 
+     orders = await SELECT.from('sap.capire.bookshop.Orders').where({customer_ID: Number(reqBody.dataSubjectID)}) 
      if(orders.length === 0)
      {
       res.status(204).send();
@@ -131,7 +131,7 @@ async function initdrmapi(app) {
     let reply = []
     try{
       if(reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround ==='Order'){
-        const legalEntity = await SELECT.one.from('AdminService.Customers',['legalEntity']).where({ID:reqBody.dataSubjectID}) 
+        const legalEntity = await SELECT.one.from('AdminService.Customers',['legalEntity']).where({ID:Number(reqBody.dataSubjectID)}) 
         if(legalEntity === null)
         {
           res.status(204).send()

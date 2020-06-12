@@ -23,7 +23,17 @@
   "cds": {
     "requires": {
       "db": {
-        "kind": "sqlite"
+        
+          "kind": "hana",
+          "model": [
+            "db/",
+            "srv/",
+            "app/",
+            "schema",
+            "services",
+            []
+          ]
+        
       }
     }
   }
