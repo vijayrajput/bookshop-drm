@@ -10,7 +10,7 @@ GET http://localhost:4004/admin/Orders?
 POST http://localhost:4004/browse/Orders
 Content-Type: application/json
 
-{ "OrderNo":"2019-0911",
+{ "OrderNo":"2019-0912",
   "customer_ID" : 1001, 
   "Items":[
     { "book_ID":201, "amount":1 },

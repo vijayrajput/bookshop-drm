@@ -167,7 +167,8 @@ async function initdrmapi(app) {
                         "retentionID": reqBody.rulesConditionSet[0].retentionID,
                         "retentionStartDate": retentionDate
                     }
-                    return res.status(200).send(reply.push(retentionmsg));
+                    reply.push(retentionmsg)
+                    return res.status(200).send(reply);
                 }
             }
         } catch (e) {
@@ -175,6 +176,50 @@ async function initdrmapi(app) {
         }
     })
 
+
+    app.post('/drm/endofResidenceDataSubject', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        const transcation = cds.transaction(req);
+        let customerStillValid = [];
+        let customerNotUsed = [];
+        let reply = {
+            "success": []
+        }
+        try {
+            if (reqBody.dataSubjectRole === 'Customer') {
+                //let legalEntities = []
+                for (let each of reqBody.legalEntitiesResidenceRules) {
+                    //legalEntities.push(each.legalEntity)
+                    const orders = await transcation.run(SELECT.from('AdminService.Orders').
+                        where({ customer_ID: SELECT.from('AdminService.Customers', ['ID']).where({ legalEntity: each.legalEntity }) }))
+
+                    //orders.sort((a, b) => a.customer_ID > b.customer_ID);
+                    for (let order of orders) {
+                        if (customerStillValid.indexOf(order.customer_ID) < 0) {
+                            let payDate = new Date(order.paymentDate),
+                                resiDate = new Date(each.residenceRules[0].residenceDate);
+                            if (order.paymentDate === null || payDate > resiDate) { /// not paid or paymentDate is grater than residence Date
+                                customerStillValid.push(order.customer_ID);
+                                customerNotUsed = customerNotUsed.filter(item => item !== order.customer_ID)  // remove valid Customer from Customer Not Used Array
+                        
+                            }
+                            else if (customerNotUsed.indexOf(order.customer_ID) < 0) {
+                                customerNotUsed.push(order.customer_ID);
+                            }
+                        }
+                    }
+                }
+                for (let customer of customerNotUsed) {
+                    const cust = { "dataSubjectID": customer }
+                    reply.success.push(cust);
+                }
+                return res.status(200).send(reply)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    })
 
 
 
