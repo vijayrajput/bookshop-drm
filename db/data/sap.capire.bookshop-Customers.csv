@@ -1,4 +1,4 @@
-ID;name;legalEntity;isBlocked
-1001;Customer1;1001;false
-1002;Customer2;1002;false
-1003;Customer3;1001;true
+ID;name;legalEntity;isBlocked;maxDeletionDate
+1001;Customer1;1001;false;9999-12-31
+1002;Customer2;1002;false;9999-12-31
+1003;Customer3;1001;true;2020-04-15

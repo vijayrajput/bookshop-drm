@@ -30,6 +30,7 @@ entity Customers : managed {
     name : String(111);
     legalEntity: Integer;
     isBlocked : Boolean; 
+    maxDeletionDate : Timestamp;
     orders : Association to many Orders on orders.customer = $self;
 }
 
@@ -40,6 +41,8 @@ entity Orders : cuid, managed {
   paymentDate : Timestamp;
   total    : Decimal(9,2) ;
   currency : Currency;
+  isBlocked : Boolean;
+  maxDeletionDate : Timestamp;
   customer : Association to Customers; 
 
 }

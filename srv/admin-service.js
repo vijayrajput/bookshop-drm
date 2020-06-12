@@ -16,7 +16,7 @@ module.exports = cds.service.impl(function () {
 
     this.on('payment',  async (req) => {
         try{
-        const order = await cds.transaction(req).run(SELECT.one.from('sap.capire.bookshop.Orders').where({ ID: req.data.orderID}));
+        const order = await cds.transaction(req).run(SELECT.one.from('AdminService.Orders').where({ ID: req.data.orderID}));
         console.log(order);
         if(order == null || order == undefined)
         {

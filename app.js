@@ -97,7 +97,7 @@ async function initdrmapi(app) {
         try {
             if (reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround === 'Order') {
                 let orders = []
-                orders = await SELECT.from('sap.capire.bookshop.Orders').where({ customer_ID: Number(reqBody.dataSubjectID) })
+                orders = await SELECT.from('AdminService.Orders').where({ customer_ID: Number(reqBody.dataSubjectID) })
                 if (orders.length === 0) {
                     res.status(204).send();
                     return;
@@ -142,13 +142,13 @@ async function initdrmapi(app) {
         }
     })
 
-    app.post('/drm/dataSubjectLastRetentionStartDates', jsonParser, async (req, res) => {
+    app.post('/drm/dataSubjectRetentionStartDate', jsonParser, async (req, res) => {
         const reqBody = req.body
         console.log(reqBody);
         let reply = []
         try {
             if (reqBody.dataSubjectRole === 'Customer') {
-                const orders = await SELECT.from('sap.capire.bookshop.Orders').where({ customer_ID: Number(reqBody.dataSubjectID) })
+                const orders = await SELECT.from('AdminService.Orders').where({ customer_ID: Number(reqBody.dataSubjectID) })
                 if (orders.length === 0) {
                     return res.status(204).send();
                 }
@@ -202,7 +202,7 @@ async function initdrmapi(app) {
                             if (order.paymentDate === null || payDate > resiDate) { /// not paid or paymentDate is grater than residence Date
                                 customerStillValid.push(order.customer_ID);
                                 customerNotUsed = customerNotUsed.filter(item => item !== order.customer_ID)  // remove valid Customer from Customer Not Used Array
-                        
+
                             }
                             else if (customerNotUsed.indexOf(order.customer_ID) < 0) {
                                 customerNotUsed.push(order.customer_ID);
@@ -222,6 +222,93 @@ async function initdrmapi(app) {
     })
 
 
+    app.post('/drm/dataSubjectInformation', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        let reply = []
+        try {
+            if (reqBody.dataSubjectRole === 'Customer') {
+                const customers = await SELECT.from('AdminService.Customers', ['ID', 'name']).where({ ID: reqBody.dataSubjectIds })
+                for (let customer of customers) {
+                    let custData = {
+                        "dataSubjectId": (customer.ID).toString(),
+                        "name": customer.name,
+                        "emailId": ""
+                    }
+                    reply.push(custData);
+                }
+            }
+            return res.status(200).send(reply);
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+  
+    app.post('/drm/deleteDSLegalGroundInstances', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        try {
+            if (reqBody.dataSubjectRole === 'Customer') {
+                const update = await  UPDATE('sap.capire.bookshop.Orders').set({isBlocked:true,maxDeletionDate:reqBody.maxDeletionDate}).where({ customer_ID: reqBody.dataSubjectID})
+                if(update > 0) return  res.status(200).send();
+            }
+            return res.status(500).send();
+        } catch (e) {
+            console.log(e);
+            return res.status(500).send();
+        }
+    })
+    
+
+    app.post('/drm/deleteDataSubject', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        try {
+            if (reqBody.dataSubjectRole === 'Customer') {
+                const update = await  UPDATE('sap.capire.bookshop.Customers').set({isBlocked:true,maxDeletionDate:reqBody.maxDeletionDate}).where({ ID: reqBody.dataSubjectID})
+                if(update > 0) return  res.status(200).send();
+            }
+            return res.status(500).send();
+        } catch (e) {
+            console.log(e);
+            return res.status(500).send();
+        }
+    })
+    
+
+    app.post('/drm/destroyLegalGroundInstances', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        try {
+            const todate = (new Date()).toISOString();
+            if (reqBody.dataSubjectRole === 'Customer' && reqBody.legalGround === 'Order') {
+                await  DELETE('sap.capire.bookshop.Orders').where({ maxDeletionDate: {'<': todate}}) /// CDS check for complex where 
+                return  res.status(202).send();
+            }
+            
+        } catch (e) {
+            console.log(e);
+            return res.status(500).send(e);
+        }
+    })
+  
+
+    app.post('/drm/destroyDataSubjects', jsonParser, async (req, res) => {
+        const reqBody = req.body
+        console.log(reqBody);
+        try {
+            const todate = (new Date()).toISOString();
+            if (reqBody.dataSubjectRole === 'Customer' ) {
+                await  DELETE('sap.capire.bookshop.Customers').where({ maxDeletionDate: {'<': todate}}) /// CDS check for complex where 
+                return  res.status(202).send();
+            }
+            
+        } catch (e) {
+            console.log(e);
+            return res.status(500).send(e);
+        }
+    })
 
 
 }

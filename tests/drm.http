@@ -27,7 +27,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:4004/drm/dataSubjectLastRetentionStartDates
+POST http://localhost:4004/drm/dataSubjectRetentionStartDate
 Content-Type: application/json
 
 {
@@ -74,3 +74,46 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:4004/drm/dataSubjectInformation
+Content-Type: application/json
+
+{
+  "applicationGroupName": "bookshop-drm-2",
+  "dataSubjectRole": "Customer",
+  "dataSubjectIds": [
+    "1001","1002","1003"
+  ]
+}
+
+
+###
+POST http://localhost:4004/drm/deleteDSLegalGroundInstances
+Content-Type: application/json
+
+{
+  "legalGround": "Order",
+  "dataSubjectRole": "Customer",
+  "dataSubjectID": "1002",
+  "startTime": "paymentDate",
+  "maxDeletionDate": "2016-10-10T23:59:59",
+  "retentionRules": [
+    {
+      "legalEntity": "1002",
+      "retentionPeriod": 5,
+      "retentionUnit": "DAY",
+      "conditionSet": []
+    }
+  ]
+}
+
+
+###
+POST http://localhost:4004/drm/deleteDataSubject
+Content-Type: application/json
+
+{
+  "applicationGroupName": "bookshop-drm-2",
+  "dataSubjectRole": "Customer",
+  "dataSubjectID": "1002",
+  "maxDeletionDate": "2016-10-10T23:59:59"
+}
