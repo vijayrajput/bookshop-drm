@@ -11,8 +11,9 @@ var jsonParser = bodyParser.json();
 const { PORT = 4004 } = process.env
 const cds = require('@sap/cds')
 
+/*
 // add security handling via passport
-/*var passport = require("passport");
+var passport = require("passport");
 var xssec = require("@sap/xssec"); 
 var xsenv = require("@sap/xsenv");
 passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
@@ -24,7 +25,7 @@ passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
 app.use(passport.initialize());
 app.use(passport.authenticate("JWT", {
 	session: false
-}));*/
+})); */
 
 initcds(app);
 initdrmapi(app);
