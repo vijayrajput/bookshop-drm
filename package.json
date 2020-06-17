@@ -23,7 +23,6 @@
   "cds": {
     "requires": {
       "db": {
-        
           "kind": "hana",
           "model": [
             "db/",
@@ -33,7 +32,6 @@
             "services",
             []
           ]
-        
       }
     }
   }
