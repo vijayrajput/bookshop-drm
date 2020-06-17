@@ -51,6 +51,9 @@ async function _reduceStock (req) {
   }
 
   req.data.status = 'ordered';
+  req.data.isBlocked = false;
+  req.data.maxDeletionDate =  (new Date('9999-12-31')).toISOString();
+  
 
 
 

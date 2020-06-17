@@ -11,7 +11,7 @@ POST http://localhost:4004/browse/Orders
 Content-Type: application/json
 
 { "OrderNo":"2019-0912",
-  "customer_ID" : 1001, 
+  "customer_ID" : 1004, 
   "Items":[
     { "book_ID":201, "amount":1 },
     { "book_ID":207, "amount":1 }

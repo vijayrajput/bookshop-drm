@@ -202,12 +202,14 @@ async function initdrmapi(app) {
         const transcation = cds.transaction(req);
         let customerStillValid = [];
         let customerNotUsed = [];
+        let comingLegalEntities = []
         let reply = {
             "success": []
         }
         try {
             if (reqBody.dataSubjectRole === 'Customer') {
                 for (let each of reqBody.legalEntitiesResidenceRules) {
+                    comingLegalEntities.push(each.legalEntity);
                     const orders = await transcation.run(SELECT.from('AdminService.Orders').
                         where({ customer_ID: SELECT.from('AdminService.Customers', ['ID']).where({ legalEntity: each.legalEntity }) }))
 
@@ -226,8 +228,16 @@ async function initdrmapi(app) {
                         }
                     }
                 }
+                
+                const noOrderCustomer = await transcation.run(SELECT.from('AdminService.Customers', ['ID']).
+                where({ID: { 'NOT IN': SELECT.from('AdminService.Orders',['customer_ID']) }},{and:{legalEntity:comingLegalEntities}}))
+                console.log( "Customer have no orders:"+ JSON.stringify(noOrderCustomer));    
                 for (let customer of customerNotUsed) {
                     const cust = { "dataSubjectID": customer }
+                    reply.success.push(cust);
+                }
+                for (let customer of noOrderCustomer) {
+                    const cust = { "dataSubjectID": customer.ID }
                     reply.success.push(cust);
                 }
                 console.log("Response endofResidenceDataSubject:" + JSON.stringify(reply));
